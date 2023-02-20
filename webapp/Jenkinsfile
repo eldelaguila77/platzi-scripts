@@ -6,7 +6,7 @@ pipeline {
   }
 
   environment {
-    ARTIFACT_ID = "elbuo8_webapp:${env.BUILD_NUMBER}"
+    ARTIFACT_ID = "eldelaguila77/elbuo8_webapp:${env.BUILD_NUMBER}"
   }
 
   stages {
@@ -26,9 +26,7 @@ pipeline {
     }
     stage('Publish') {
       when {
-        expression {
-          return env.GIT_BRANCH == "origin/master"
-        }
+        branch 'master'
       }
       steps {
         script {
@@ -40,9 +38,7 @@ pipeline {
     }
     stage('Schedule Staging Deployment') {
       when {
-        expression {
-          return env.GIT_BRANCH == "origin/master"
-        }
+        branch 'master'
       }
       steps {
         build job: 'deploy-webapp-staging', parameters: [string(name: 'ARTIFACT_ID', value: "${env.ARTIFACT_ID}")], wait: false
